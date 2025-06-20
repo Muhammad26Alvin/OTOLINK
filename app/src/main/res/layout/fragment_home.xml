@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:scrollbars="none"
+    android:paddingBottom="85dp"
+    android:clipToPadding="false">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Search Bar -->
+        <EditText
+            android:id="@+id/searchBar"
+            android:hint="Cari Mobil, Handphone, dan lainnya..."
+            android:drawableLeft="@android:drawable/ic_menu_search"
+            android:padding="12dp"
+            android:background="@android:drawable/edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- Kategori -->
+        <TextView
+            android:text="Telusuri Kategori"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <!-- Kategori: Barang Gratis -->
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_marginEnd="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:gravity="center_horizontal">
+
+                    <ImageView
+                        android:src="@drawable/ic_free"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp" />
+
+                    <TextView
+                        android:text="Barang Gratis"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <!-- Kategori: Mobil -->
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_marginEnd="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:gravity="center_horizontal">
+
+                    <ImageView
+                        android:src="@drawable/ic_car"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp" />
+
+                    <TextView
+                        android:text="Mobil"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <!-- Kategori: Motor -->
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_marginEnd="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:gravity="center_horizontal">
+
+                    <ImageView
+                        android:src="@drawable/ic_bike"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp" />
+
+                    <TextView
+                        android:text="Motor"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <!-- Kategori: Sepeda -->
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_marginEnd="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:gravity="center_horizontal">
+
+                    <ImageView
+                        android:src="@drawable/ic_sepeda"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp" />
+
+                    <TextView
+                        android:text="Sepeda"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <!-- Kategori: Scooter -->
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_marginEnd="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:gravity="center_horizontal">
+
+                    <ImageView
+                        android:src="@drawable/ic_scooter"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp" />
+
+                    <TextView
+                        android:text="Scooter"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <!-- Rekomendasi Baru -->
+        <TextView
+            android:text="Rekomendasi Baru"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginTop="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+                <!-- Grid Rekomendasi -->
+                <GridLayout
+                    android:columnCount="2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:columnOrderPreserved="false">
+
+                    <!-- Item 1 -->
+                    <LinearLayout
+                        android:id="@+id/Item1"
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_columnWeight="1"
+                        android:background="@drawable/card_background"
+                        android:padding="8dp"
+                        android:elevation="4dp">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp">
+
+                            <ImageView
+                                android:src="@drawable/sampel3"
+                                android:scaleType="centerCrop"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:background="#FFD700"
+                                android:padding="4dp"
+                                android:gravity="center_vertical">
+
+                                <ImageView
+                                    android:layout_width="10dp"
+                                    android:layout_height="10dp"
+                                    android:src="@drawable/ic_highlight"
+                                    android:layout_marginEnd="4dp" />
+
+                                <TextView
+                                    android:text="HIGHLIGHT"
+                                    android:textStyle="bold"
+                                    android:textSize="10sp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+                            </LinearLayout>
+
+                        </FrameLayout>
+
+                        <TextView
+                            android:text="Rp 1.350.000.000"
+                            android:textStyle="bold"
+                            android:textColor="#003366"
+                            android:textSize="14sp"
+                            android:layout_marginTop="6dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:text="DP 112,5JT PPERBULAN"
+                            android:maxLines="2"
+                            android:textSize="12sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:text="2024"
+                            android:textSize="12sp"
+                            android:textColor="#777777"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="16sp"
+                                android:layout_height="16sp"
+                                android:src="@drawable/ic_location"
+                                android:layout_marginTop="2dp">
+                            </ImageView>
+
+                            <TextView
+                                android:text="JAGAKARSA, JAKARTA SELATAN"
+                                android:textSize="12sp"
+                                android:textColor="#777777"
+                                android:layout_marginTop="2dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Item 2 -->
+                    <LinearLayout
+                        android:id="@+id/Item2"
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_columnWeight="1"
+                        android:background="@drawable/card_background"
+                        android:padding="8dp"
+                        android:elevation="4dp">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp">
+
+                            <ImageView
+                                android:src="@drawable/sampel1"
+                                android:scaleType="centerCrop"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:background="#FFD700"
+                                android:padding="4dp"
+                                android:gravity="center_vertical">
+
+                                <ImageView
+                                    android:layout_width="10dp"
+                                    android:layout_height="10dp"
+                                    android:src="@drawable/ic_highlight"
+                                    android:layout_marginEnd="4dp" />
+
+                                <TextView
+                                    android:text="HIGHLIGHT"
+                                    android:textStyle="bold"
+                                    android:textSize="10sp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+                            </LinearLayout>
+                        </FrameLayout>
+
+                        <TextView
+                            android:text="Rp 3.600.000.000"
+                            android:textStyle="bold"
+                            android:textColor="#003366"
+                            android:textSize="14sp"
+                            android:layout_marginTop="6dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:text="DP 300JT PERBULAN"
+                            android:maxLines="2"
+                            android:textSize="12sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:text="2025"
+                            android:textSize="12sp"
+                            android:textColor="#777777"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="16sp"
+                                android:layout_height="16sp"
+                                android:src="@drawable/ic_location"
+                                android:layout_marginTop="2dp">
+                            </ImageView>
+
+                            <TextView
+                                android:text="TANJUNG BARAT, JAKARTA SELATAN"
+                                android:textSize="12sp"
+                                android:textColor="#777777"
+                                android:layout_marginTop="2dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Item 3 -->
+                    <LinearLayout
+                        android:id="@+id/Item3"
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_columnWeight="1"
+                        android:background="@drawable/card_background"
+                        android:padding="8dp"
+                        android:elevation="4dp">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp">
+
+                            <ImageView
+                                android:src="@drawable/sampel4"
+                                android:scaleType="centerCrop"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:text="Rp 50.000.000"
+                            android:textStyle="bold"
+                            android:textColor="#003366"
+                            android:textSize="14sp"
+                            android:layout_marginTop="6dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:text="HARLEY BEKAS RASA BARU KECE DIBAWA SUNMORI"
+                            android:maxLines="2"
+                            android:textSize="12sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:text="2015"
+                            android:textSize="12sp"
+                            android:textColor="#777777"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="16sp"
+                                android:layout_height="16sp"
+                                android:src="@drawable/ic_location"
+                                android:layout_marginTop="2dp">
+                            </ImageView>
+
+                            <TextView
+                                android:text="KEMILING, BANDAR LAMPUNG"
+                                android:textSize="12sp"
+                                android:textColor="#777777"
+                                android:layout_marginTop="2dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Item 4 -->
+                    <LinearLayout
+                        android:id="@+id/Item4"
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_columnWeight="1"
+                        android:background="@drawable/card_background"
+                        android:padding="8dp"
+                        android:elevation="4dp">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp">
+
+                            <ImageView
+                                android:src="@drawable/sampel5"
+                                android:scaleType="centerCrop"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:text="Rp 18.000.000"
+                            android:textStyle="bold"
+                            android:textColor="#003366"
+                            android:textSize="14sp"
+                            android:layout_marginTop="6dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:text="KENCANG DAN HEMAT BENSIN"
+                            android:maxLines="2"
+                            android:textSize="12sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:text="2024"
+                            android:textSize="12sp"
+                            android:textColor="#777777"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="16sp"
+                                android:layout_height="16sp"
+                                android:src="@drawable/ic_location"
+                                android:layout_marginTop="2dp">
+                            </ImageView>
+
+                            <TextView
+                                android:text="KEDATON, BANDAR LAMPUNG"
+                                android:textSize="12sp"
+                                android:textColor="#777777"
+                                android:layout_marginTop="2dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </GridLayout>
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">UASTAM</string>
+    <string name="title_home">Home</string>
+    <string name="title_account">Akun Saya</string>
+    <string name="title_iklan">Favorite</string>
+    <string name="title_chat">Chat</string>
+    <string name="title_sampel1">Sampel1</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

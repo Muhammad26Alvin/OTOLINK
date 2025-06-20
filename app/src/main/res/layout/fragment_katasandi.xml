@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.account.KatasandiFragment">
+
+
+    <!-- Tombol simpan fix di bawah -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnkatasandi"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:text="Simpan"
+        android:textStyle="bold"
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="@color/white"
+        android:layout_margin="16dp"
+        android:padding="12dp"
+        app:cornerRadius="12dp"
+        app:backgroundTint="@color/lavender" />
+
+    <!-- Scrollable content -->
+    <ScrollView
+        android:id="@+id/scroll_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/btnkatasandi"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="120dp"> <!-- ruang agar konten tidak tertutup tombol -->
+
+            <!-- Header CardView -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:id="@+id/close"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="4dp"
+                        android:src="@drawable/ic_close"
+                        android:contentDescription="Tutup" />
+
+                    <TextView
+                        android:id="@+id/btnsimpan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Buat Kata Sandi"
+                        android:textColor="@color/lavender"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/poppins_medium" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Form Input -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Silahkan masukkan kata sandi baru anda"
+                    android:textSize="15sp"
+                    android:textColor="@color/lavender"
+                    android:fontFamily="@font/poppins_regular"
+                    android:layout_marginBottom="6dp"
+                    android:layout_marginLeft="6dp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/editkatasandi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/lavender"
+                        android:textSize="14sp"
+                        android:textColor="@color/lavender"
+                        android:fontFamily="@font/poppins_light"
+                        android:padding="8dp"
+                        android:inputType="textPassword"
+                        android:hint="Kata sandi baru"
+                        android:layout_toStartOf="@id/password"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="24dp" />
+
+                    <ImageView
+                        android:id="@+id/password"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_eye"
+                        android:contentDescription="Toggle Show Password"
+                        android:clickable="true"
+                        android:focusable="true" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/repeatkatasandi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/lavender"
+                        android:textSize="14sp"
+                        android:textColor="@color/lavender"
+                        android:fontFamily="@font/poppins_light"
+                        android:padding="8dp"
+                        android:inputType="textPassword"
+                        android:hint="Ulangi kata sandi baru"
+                        android:layout_toStartOf="@id/repeatpassword"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="24dp" />
+
+                    <ImageView
+                        android:id="@+id/repeatpassword"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_eye"
+                        android:contentDescription="Toggle Show Password"
+                        android:clickable="true"
+                        android:focusable="true" />
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

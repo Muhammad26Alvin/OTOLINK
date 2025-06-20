@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:id="@+id/form1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Judul + Tombol Close -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <ImageView
+                android:id="@+id/close"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_close"
+                android:contentDescription="Tutup"
+                android:layout_marginEnd="8dp"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Detail Barang yang Ingin Dijual"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@color/dark_blue"/>
+        </LinearLayout>
+
+
+        <!-- Foto Upload -->
+        <LinearLayout
+            android:id="@+id/uploadfotoform1"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@color/light_gray"
+            android:layout_marginBottom="24dp">
+
+            <!-- Preview Gambar Terpilih -->
+            <ImageView
+                android:id="@+id/upload_image_preview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:visibility="gone"/>
+
+            <!-- Icon Kamera -->
+            <ImageView
+                android:id="@+id/upload_icon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_camera"
+                android:contentDescription="Upload Foto"
+                android:visibility="visible"/>
+
+            <TextView
+                android:id="@+id/upload_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Masukan Foto Barang Anda"
+                android:textColor="@color/gray"
+                android:layout_marginTop="8dp"
+                android:visibility="visible"/>
+        </LinearLayout>
+
+        <!-- Form Input -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Merek"
+                android:textStyle="bold"
+                android:textColor="@color/dark_blue"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Masukan Merek"
+                android:background="@drawable/edit_text_bg"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"/>
+
+            <!-- Tahun -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tahun"
+                android:textStyle="bold"
+                android:textColor="@color/dark_blue"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Masukan Tahun"
+                android:background="@drawable/edit_text_bg"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"/>
+
+            <!-- Jarak Tempuh -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Jarak Tempuh"
+                android:textStyle="bold"
+                android:textColor="@color/dark_blue"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Masukan Jarak Tempuh"
+                android:background="@drawable/edit_text_bg"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"/>
+
+            <!-- Tipe Bahan Bakar -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tipe Bahan Bakar"
+                android:textStyle="bold"
+                android:textColor="@color/dark_blue"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Masukan Tipe Bahan Bakar"
+                android:background="@drawable/edit_text_bg"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"/>
+
+            <!-- Warna -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Warna"
+                android:textStyle="bold"
+                android:textColor="@color/dark_blue"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Masukan Warna"
+                android:background="@drawable/edit_text_bg"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"/>
+
+            <!-- Tipe Bodi -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tipe Bodi"
+                android:textStyle="bold"
+                android:textColor="@color/dark_blue"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Masukan Tipe Bodi"
+                android:background="@drawable/edit_text_bg"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"/>
+
+            <!-- Kapasitas Mesin -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Kapasitas Mesin"
+                android:textStyle="bold"
+                android:textColor="@color/dark_blue"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Masukan Kapasitas Mesin"
+                android:background="@drawable/edit_text_bg"
+                android:padding="12dp"
+                android:layout_marginBottom="24dp"/>
+        </LinearLayout>
+
+        <!-- Tombol Lanjut -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnform1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lanjut"
+            android:textStyle="bold"
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/white"
+            android:layout_marginTop="6dp"
+            android:padding="12dp"
+            app:cornerRadius="12dp"
+            app:backgroundTint="@color/lavender" />
+    </LinearLayout>
+</ScrollView>

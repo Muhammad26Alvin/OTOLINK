@@ -1,0 +1,265 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@color/white">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="16dp">
+
+                <ImageView
+                    android:id="@+id/close"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_close"
+                    android:contentDescription="Tutup" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/btnsimpan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Simpan"
+                    android:textColor="@color/lavender"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_medium" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Informasi Diri -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Informasi Diri"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/lavender"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/poppins_medium" />
+
+        <!-- Foto Profil -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical">
+
+            <!-- Foto Profil -->
+            <RelativeLayout
+                android:layout_width="100dp"
+                android:layout_height="100dp">
+
+                <ImageView
+                    android:id="@+id/imgProfile"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/profilepict"
+                    android:background="@drawable/circle_bg"
+                    android:clipToOutline="true" />
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="4dp"
+                    android:src="@drawable/ic_camera"
+                    android:background="@drawable/circle_overlay"
+                    android:padding="4dp" />
+            </RelativeLayout>
+
+            <!-- Nama di Sebelah Kanan -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:text="Masukkan Nama Anda"
+                    android:fontFamily="@font/poppins_extralight"
+                    android:textColor="@color/lavender"
+                    android:textSize="10sp">
+                </TextView>
+
+                <EditText
+                    android:id="@+id/edittextnama"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:text="onyourmark"
+                    android:textSize="12sp"
+                    android:textColor="@color/lavender"
+                    android:fontFamily="@font/poppins_regular"
+                    android:backgroundTint="@color/lavender"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Info Tentang Anda -->
+        <EditText
+            android:id="@+id/edittextinfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Info tentang anda"
+            android:layout_marginLeft="16dp"
+            android:fontFamily="@font/poppins_extralight"
+            android:textColor="@color/lavender"
+            android:textSize="12sp"
+            android:paddingBottom="4dp"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/lavender"/>
+
+        <!-- Informasi Kontak -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Informasi Kontak"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="8dp"
+            android:textSize="16sp"
+            android:textColor="@color/lavender"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/poppins_medium" />
+
+        <!-- Nomor Telepon -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="16dp">
+
+            <!-- Kolom Negara dan +62 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <!-- Label dan kode negara dalam satu kolom -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="12dp">
+
+                    <!-- Label "Negara" -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Negara"
+                        android:textSize="12sp"
+                        android:textColor="@color/lavender"
+                        android:fontFamily="@font/poppins_regular" />
+
+                    <!-- Kode Negara -->
+                    <TextView
+                        android:id="@+id/textKodeNegara"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:paddingBottom="4dp"
+                        android:text="+62"
+                        android:textColor="@color/lavender"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <!-- EditText Nomor Telepon -->
+                <EditText
+                    android:id="@+id/editnomortelepon"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Nomor Telepon"
+                    android:backgroundTint="@color/lavender"
+                    android:textColorHint="@color/lavender"
+                    android:textColor="@color/lavender"
+                    android:fontFamily="@font/poppins_extralight"
+                    android:textSize="12sp"
+                    android:paddingBottom="4dp"
+                    android:inputType="phone" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            android:padding="8dp">
+
+            <!-- Label "Email" -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:textSize="12sp"
+                android:textColor="@color/lavender"
+                android:fontFamily="@font/poppins_regular"
+                android:layout_marginBottom="-2dp" />
+
+            <!-- Input + Garis -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/textEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/lavender"
+                    android:text="onyourmark99@gmail.com"
+                    android:textSize="14sp"
+                    android:textColor="@color/lavender"
+                    android:fontFamily="@font/poppins_light"
+                    android:padding="0dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="2dp" />
+
+            </LinearLayout>
+
+            <!-- Deskripsi Email -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email ini berguna agar tetap berhubungan. Kami tidak akan membagikan alamat email pribadi Anda dengan pengguna lainnya."
+                android:textColor="@color/lavender"
+                android:textSize="10sp"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/poppins_extralight" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
