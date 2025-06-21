@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
@@ -13,37 +15,113 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- Search Bar -->
-        <EditText
-            android:id="@+id/searchBar"
-            android:hint="Cari Mobil, Handphone, dan lainnya..."
-            android:drawableLeft="@android:drawable/ic_menu_search"
-            android:padding="12dp"
-            android:background="@android:drawable/edit_text"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-        <!-- Kategori -->
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/logo" />
+
+            <!-- Spacer -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/namalokasi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name Location"
+                android:drawableLeft="@drawable/ic_location"
+                android:gravity="center_vertical" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="8dp">
+
+            <EditText
+                android:id="@+id/searchBar"
+                android:hint="Cari Kendaraan..."
+                android:drawableLeft="@drawable/ic_search"
+                android:padding="12dp"
+                android:background="@drawable/bgsearchbar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_notification"
+                android:paddingStart="12dp"
+                android:layout_marginStart="8dp"
+                android:layout_gravity="center_vertical" />
+        </LinearLayout>
+        
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp">
+
+            <com.denzcoskun.imageslider.ImageSlider
+                android:id="@+id/ImageSlider"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                app:iss_period="1000"
+                app:iss_auto_cycle="true"
+                app:iss_delay="3000">
+
+            </com.denzcoskun.imageslider.ImageSlider>
+        </androidx.cardview.widget.CardView>
+
         <TextView
-            android:text="Telusuri Kategori"
+            android:text="Kategori"
             android:textStyle="bold"
             android:textSize="18sp"
             android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="@color/lavender"
+            android:layout_marginBottom="8dp"
+            android:layout_gravity="center"/>
 
-        <HorizontalScrollView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:scrollbars="none">
+            android:elevation="12dp">
 
             <LinearLayout
                 android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
 
-                <!-- Kategori: Barang Gratis -->
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_marginEnd="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/homelogomobil"
+                        android:src="@drawable/logomobil"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp" />
+                </LinearLayout>
+
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_marginEnd="16dp"
@@ -53,114 +131,24 @@
                     android:gravity="center_horizontal">
 
                     <ImageView
-                        android:src="@drawable/ic_free"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp" />
-
-                    <TextView
-                        android:text="Barang Gratis"
-                        android:textSize="12sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:id="@+id/homelogomotor"
+                        android:src="@drawable/logomotor"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp" />
                 </LinearLayout>
-
-                <!-- Kategori: Mobil -->
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_marginEnd="16dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:gravity="center_horizontal">
-
-                    <ImageView
-                        android:src="@drawable/ic_car"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp" />
-
-                    <TextView
-                        android:text="Mobil"
-                        android:textSize="12sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
-                <!-- Kategori: Motor -->
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_marginEnd="16dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:gravity="center_horizontal">
-
-                    <ImageView
-                        android:src="@drawable/ic_bike"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp" />
-
-                    <TextView
-                        android:text="Motor"
-                        android:textSize="12sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
-                <!-- Kategori: Sepeda -->
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_marginEnd="16dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:gravity="center_horizontal">
-
-                    <ImageView
-                        android:src="@drawable/ic_sepeda"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp" />
-
-                    <TextView
-                        android:text="Sepeda"
-                        android:textSize="12sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
-                <!-- Kategori: Scooter -->
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_marginEnd="16dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:gravity="center_horizontal">
-
-                    <ImageView
-                        android:src="@drawable/ic_scooter"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp" />
-
-                    <TextView
-                        android:text="Scooter"
-                        android:textSize="12sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
             </LinearLayout>
-        </HorizontalScrollView>
+        </androidx.cardview.widget.CardView>
 
-        <!-- Rekomendasi Baru -->
         <TextView
-            android:text="Rekomendasi Baru"
+            android:text="Rekomendasi"
             android:textStyle="bold"
+            android:textColor="@color/lavender"
             android:textSize="18sp"
             android:layout_marginTop="24dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"/>
 
-                <!-- Grid Rekomendasi -->
                 <GridLayout
                     android:columnCount="2"
                     android:layout_width="match_parent"
@@ -176,7 +164,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
                         android:layout_columnWeight="1"
-                        android:background="@drawable/card_background"
+                        android:background="@drawable/bgsearchbar"
                         android:padding="8dp"
                         android:elevation="4dp">
 
@@ -268,7 +256,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
                         android:layout_columnWeight="1"
-                        android:background="@drawable/card_background"
+                        android:background="@drawable/bgsearchbar"
                         android:padding="8dp"
                         android:elevation="4dp">
 
@@ -358,7 +346,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
                         android:layout_columnWeight="1"
-                        android:background="@drawable/card_background"
+                        android:background="@drawable/bgsearchbar"
                         android:padding="8dp"
                         android:elevation="4dp">
 
@@ -426,7 +414,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
                         android:layout_columnWeight="1"
-                        android:background="@drawable/card_background"
+                        android:background="@drawable/bgsearchbar"
                         android:padding="8dp"
                         android:elevation="4dp">
 
