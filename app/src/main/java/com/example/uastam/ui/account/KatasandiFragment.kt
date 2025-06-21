@@ -11,6 +11,10 @@ import android.widget.Toast
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import com.example.uastam.R
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.DatabaseReference
+import android.content.Context
+
 
 class KatasandiFragment : Fragment() {
 
@@ -25,47 +29,42 @@ class KatasandiFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val btnBack: ImageView = view.findViewById(R.id.close)
-        btnBack.setOnClickListener {
-            requireActivity().onBackPressed()
-        }
+        val database = FirebaseDatabase.getInstance().getReference("users")
 
         val editPassword: EditText = view.findViewById(R.id.editkatasandi)
-        val togglePassword: ImageView = view.findViewById(R.id.password)
-
         val repeatPassword: EditText = view.findViewById(R.id.repeatkatasandi)
-        val toggleRepeatPassword: ImageView = view.findViewById(R.id.repeatpassword)
-
-        val btnSimpan: View = view.findViewById(R.id.btnkatasandi)
+        val btnkatasandi: View = view.findViewById(R.id.btnkatasandi)
+        val eyePassword: ImageView = view.findViewById(R.id.eyepassword)
+        val eyeConfirmPassword: ImageView = view.findViewById(R.id.eyerepeatpassword)
 
         var isPasswordVisible = false
-        var isRepeatVisible = false
+        var isConfirmPasswordVisible = false
 
-        togglePassword.setOnClickListener {
+        eyePassword.setOnClickListener {
             isPasswordVisible = !isPasswordVisible
             if (isPasswordVisible) {
                 editPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
-                togglePassword.setImageResource(R.drawable.ic_eye)
+                eyePassword.setImageResource(R.drawable.ic_eye)
             } else {
                 editPassword.transformationMethod = PasswordTransformationMethod.getInstance()
-                togglePassword.setImageResource(R.drawable.ic_eye_close)
+                eyePassword.setImageResource(R.drawable.ic_eye_close)
             }
             editPassword.setSelection(editPassword.text.length)
         }
 
-        toggleRepeatPassword.setOnClickListener {
-            isRepeatVisible = !isRepeatVisible
-            if (isRepeatVisible) {
+        eyeConfirmPassword.setOnClickListener {
+            isConfirmPasswordVisible = !isConfirmPasswordVisible
+            if (isConfirmPasswordVisible) {
                 repeatPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
-                toggleRepeatPassword.setImageResource(R.drawable.ic_eye)
+                eyeConfirmPassword.setImageResource(R.drawable.ic_eye)
             } else {
                 repeatPassword.transformationMethod = PasswordTransformationMethod.getInstance()
-                toggleRepeatPassword.setImageResource(R.drawable.ic_eye_close)
+                eyeConfirmPassword.setImageResource(R.drawable.ic_eye_close)
             }
             repeatPassword.setSelection(repeatPassword.text.length)
         }
 
-        btnSimpan.setOnClickListener {
+        btnkatasandi.setOnClickListener {
             val newPassword = editPassword.text.toString()
             val repeatPass = repeatPassword.text.toString()
 
@@ -79,14 +78,27 @@ class KatasandiFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            val sharedPref = requireActivity().getSharedPreferences("user_prefs", 0)
-            with(sharedPref.edit()) {
-                putString("password", newPassword)
-                apply()
+            val sharedPref = requireActivity().getSharedPreferences("user_profile", Context.MODE_PRIVATE)
+            val username = sharedPref.getString("username", null)
+
+            if (username == null) {
+                Toast.makeText(requireContext(), "Username tidak ditemukan", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
 
-            Toast.makeText(requireContext(), "Password berhasil disimpan", Toast.LENGTH_SHORT).show()
-            requireActivity().onBackPressed()
+            val updates = mapOf(
+                "password" to newPassword,
+                "confirmpassword" to repeatPass
+            )
+
+            database.child(username).updateChildren(updates)
+                .addOnSuccessListener {
+                    Toast.makeText(requireContext(), "Password berhasil diubah", Toast.LENGTH_SHORT).show()
+                    requireActivity().onBackPressed()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(requireContext(), "Gagal mengubah password", Toast.LENGTH_SHORT).show()
+                }
         }
     }
 }

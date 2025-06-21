@@ -15,15 +15,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.example.uastam.R
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.DatabaseReference
 
 class EditProfileFragment : Fragment() {
 
     private lateinit var ivProfile: ImageView
-    private lateinit var etNama: EditText
+    private lateinit var etUsername: EditText
     private lateinit var etInfo: EditText
     private lateinit var etNomorTelepon: EditText
     private lateinit var etEmail: EditText
     private lateinit var btnSimpan: TextView
+    private lateinit var database: DatabaseReference
 
     private val PICK_IMAGE_REQUEST = 1001
     private var imageUri: Uri? = null
@@ -38,17 +41,19 @@ class EditProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        ivProfile = view.findViewById(R.id.imgProfile)
+        etUsername = view.findViewById(R.id.edittextusername)
+        etInfo = view.findViewById(R.id.edittextinfo)
+        etNomorTelepon = view.findViewById(R.id.editnomortelepon)
+        etEmail = view.findViewById(R.id.textEmail)
+        btnSimpan = view.findViewById(R.id.btnsimpan)
+
         val btnBack: ImageView = view.findViewById(R.id.close)
         btnBack.setOnClickListener {
             requireActivity().onBackPressed()
         }
 
-        ivProfile = view.findViewById(R.id.imgProfile) // pastikan ada ImageView dengan id ini di layout
-        etNama = view.findViewById(R.id.edittextnama)
-        etInfo = view.findViewById(R.id.edittextinfo)
-        etNomorTelepon = view.findViewById(R.id.editnomortelepon)
-        etEmail = view.findViewById(R.id.textEmail)
-        btnSimpan = view.findViewById(R.id.btnsimpan)
+        database = FirebaseDatabase.getInstance().getReference("users")
 
         ivProfile.setOnClickListener {
             openGalleryForImage()
@@ -68,7 +73,6 @@ class EditProfileFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
             imageUri = data?.data
             if (imageUri != null) {
@@ -78,19 +82,22 @@ class EditProfileFragment : Fragment() {
     }
 
     private fun saveProfile() {
-        val nama = etNama.text.toString().trim()
+        val newUsername = etUsername.text.toString().trim()
         val info = etInfo.text.toString().trim()
         val nomorTelepon = etNomorTelepon.text.toString().trim()
         val email = etEmail.text.toString().trim()
 
-        if (nama.isEmpty() || email.isEmpty()) {
-            Toast.makeText(requireContext(), "Nama dan Email harus diisi", Toast.LENGTH_SHORT).show()
+        if (newUsername.isEmpty() || email.isEmpty()) {
+            Toast.makeText(requireContext(), "Username dan Email harus diisi", Toast.LENGTH_SHORT).show()
             return
         }
 
         val sharedPref = requireActivity().getSharedPreferences("user_profile", Context.MODE_PRIVATE)
+        val oldUsername = sharedPref.getString("username", null) ?: newUsername
+
+        // Simpan ke SharedPreferences
         with(sharedPref.edit()) {
-            putString("nama", nama)
+            putString("username", newUsername)
             putString("info", info)
             putString("nomorTelepon", nomorTelepon)
             putString("email", email)
@@ -100,25 +107,78 @@ class EditProfileFragment : Fragment() {
             apply()
         }
 
-        val resultBundle = Bundle()
-        resultBundle.putString("newName", nama)
-        parentFragmentManager.setFragmentResult("requestKeyName", resultBundle)
+        database.child(oldUsername).get().addOnSuccessListener { snapshot ->
+            val password = snapshot.child("password").value?.toString() ?: ""
+            val confirmPassword = snapshot.child("confirmpassword").value?.toString() ?: ""
 
-        Toast.makeText(requireContext(), "Data tersimpan", Toast.LENGTH_SHORT).show()
-        parentFragmentManager.popBackStack()
+            val updatedUser = mapOf(
+                "username" to newUsername,
+                "email" to email,
+                "info" to info,
+                "nomorTelepon" to nomorTelepon,
+                "password" to password,
+                "confirmpassword" to confirmPassword
+            )
+
+            if (oldUsername != newUsername) {
+                database.child(oldUsername).removeValue()
+            }
+
+            database.child(newUsername).setValue(updatedUser)
+                .addOnSuccessListener {
+                    if (!isAdded) return@addOnSuccessListener
+
+                    val resultBundle = Bundle().apply {
+                        putString("newName", newUsername)
+                        putString("newImageUri", imageUri?.toString())
+                    }
+                    parentFragmentManager.setFragmentResult("requestKeyName", resultBundle)
+
+                    Toast.makeText(requireContext(), "Data Firebase disimpan", Toast.LENGTH_SHORT).show()
+                    parentFragmentManager.popBackStack()
+                }
+                .addOnFailureListener {
+                    if (isAdded) {
+                        Toast.makeText(requireContext(), "Gagal simpan ke Firebase", Toast.LENGTH_SHORT).show()
+                    }
+                }
+        }.addOnFailureListener {
+            if (isAdded) {
+                Toast.makeText(requireContext(), "Gagal ambil data lama", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun loadProfile() {
         val sharedPref = requireActivity().getSharedPreferences("user_profile", Context.MODE_PRIVATE)
-        etNama.setText(sharedPref.getString("nama", ""))
-        etInfo.setText(sharedPref.getString("info", ""))
-        etNomorTelepon.setText(sharedPref.getString("nomorTelepon", ""))
-        etEmail.setText(sharedPref.getString("email", ""))
+        val username = sharedPref.getString("username", null)
 
-        val imageUriString = sharedPref.getString("profileImageUri", null)
-        if (!imageUriString.isNullOrEmpty()) {
-            imageUri = Uri.parse(imageUriString)
-            ivProfile.setImageURI(imageUri)
+        if (username.isNullOrEmpty()) {
+            Toast.makeText(requireContext(), "Username tidak ditemukan", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        database.child(username).get().addOnSuccessListener { snapshot ->
+            if (snapshot.exists()) {
+                etUsername.setText(snapshot.child("username").value?.toString() ?: "")
+                etInfo.setText(snapshot.child("info").value?.toString() ?: "")
+                etNomorTelepon.setText(snapshot.child("nomorTelepon").value?.toString() ?: "")
+                etEmail.setText(snapshot.child("email").value?.toString() ?: "")
+
+                val imageUriString = sharedPref.getString("profileImageUri", null)
+                if (!imageUriString.isNullOrEmpty()) {
+                    imageUri = Uri.parse(imageUriString)
+                    try {
+                        ivProfile.setImageURI(imageUri)
+                    } catch (e: SecurityException) {
+                        Toast.makeText(requireContext(), "Gagal memuat gambar. Coba pilih ulang.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } else {
+                Toast.makeText(requireContext(), "Data tidak ditemukan di Firebase", Toast.LENGTH_SHORT).show()
+            }
+        }.addOnFailureListener {
+            Toast.makeText(requireContext(), "Gagal ambil data dari Firebase", Toast.LENGTH_SHORT).show()
         }
     }
 }

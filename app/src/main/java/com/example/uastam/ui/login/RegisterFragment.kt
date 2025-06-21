@@ -18,6 +18,9 @@ import com.google.firebase.Firebase
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlin.math.log
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
+
 
 class RegisterFragment : Fragment() {
 
@@ -44,7 +47,37 @@ class RegisterFragment : Fragment() {
         formPasswordRegister = view.findViewById(R.id.formpasswordregister)
         formConfirmPasswordRegister = view.findViewById(R.id.formconfirmpasswordregister)
         btnKonfirmasiRegister = view.findViewById(R.id.btnkonfirmasiregister)
+        val eyePassword: ImageView = view.findViewById(R.id.eyepasswordregister)
+        val eyeConfirmPassword: ImageView = view.findViewById(R.id.eyeconfirmpasswordregister)
         val btnBack: ImageView = view.findViewById(R.id.btnbackregister)
+
+        var isPasswordVisible = false
+        var isConfirmPasswordVisible = false
+
+        eyePassword.setOnClickListener {
+            isPasswordVisible = !isPasswordVisible
+            if (isPasswordVisible) {
+                formPasswordRegister.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                eyePassword.setImageResource(R.drawable.ic_eye)
+            } else {
+                formPasswordRegister.transformationMethod = PasswordTransformationMethod.getInstance()
+                eyePassword.setImageResource(R.drawable.ic_eye_close)
+            }
+            formPasswordRegister.setSelection(formPasswordRegister.text.length)
+        }
+
+        eyeConfirmPassword.setOnClickListener {
+            isConfirmPasswordVisible = !isConfirmPasswordVisible
+            if (isConfirmPasswordVisible) {
+                formConfirmPasswordRegister.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                eyeConfirmPassword.setImageResource(R.drawable.ic_eye)
+            } else {
+                formConfirmPasswordRegister.transformationMethod = PasswordTransformationMethod.getInstance()
+                eyeConfirmPassword.setImageResource(R.drawable.ic_eye_close)
+            }
+            formConfirmPasswordRegister.setSelection(formConfirmPasswordRegister.text.length)
+        }
+
         btnBack.setOnClickListener {
             requireActivity().onBackPressed()
         }

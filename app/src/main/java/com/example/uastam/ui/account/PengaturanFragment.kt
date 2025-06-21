@@ -7,6 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.example.uastam.R
+import android.content.Intent
+import android.content.Context
+import com.example.uastam.LoginActivity
+
 class PengaturanFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,9 +32,22 @@ class PengaturanFragment : Fragment() {
         cardsandi.setOnClickListener {
             val katasandi = KatasandiFragment()
             parentFragmentManager.beginTransaction()
-                .replace(R.id.editprofil, katasandi) // Ganti dengan ID container layout-mu
+                .replace(R.id.editprofil, katasandi)
                 .addToBackStack(null)
                 .commit()
+        }
+
+        val logoutCard: View = view.findViewById(R.id.pengaturanlogout)
+        logoutCard.setOnClickListener {
+            val sharedPref = requireActivity().getSharedPreferences("user_profile", Context.MODE_PRIVATE)
+            with(sharedPref.edit()) {
+                clear()
+                apply()
+            }
+
+            val intent = Intent(requireActivity(), LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
     }
 }

@@ -10,12 +10,15 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.example.uastam.R
+import com.google.firebase.database.*
 
 class AccountFragment : Fragment() {
 
     private lateinit var tvUserName: TextView
     private lateinit var ivProfile: ImageView
+    private lateinit var database: DatabaseReference
 
     override fun onResume() {
         super.onResume()
@@ -35,11 +38,11 @@ class AccountFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         tvUserName = view.findViewById(R.id.username)
-        ivProfile = view.findViewById(R.id.profile)  // Pastikan ImageView dengan id ini ada di layout
+        ivProfile = view.findViewById(R.id.profile)
 
         loadUserData()
 
-        // Setup listener untuk menerima update nama dan foto dari EditProfileFragment
+        // Update nama & gambar saat kembali dari EditProfileFragment
         parentFragmentManager.setFragmentResultListener("requestKeyName", this) { _, bundle ->
             val updatedName = bundle.getString("newName")
             val updatedImageUriString = bundle.getString("newImageUri")
@@ -52,53 +55,73 @@ class AccountFragment : Fragment() {
             }
         }
 
+        // Navigasi antar fragment
         val btnProfil: Button = view.findViewById(R.id.btnprofil)
         btnProfil.setOnClickListener {
-            val editProfileFragment = EditProfileFragment()
             parentFragmentManager.beginTransaction()
-                .replace(R.id.editprofil, editProfileFragment)
+                .replace(R.id.editprofil, EditProfileFragment())
                 .addToBackStack(null)
                 .commit()
         }
 
-        val pesananProfil: View = view.findViewById(R.id.profilpesanan)
-        pesananProfil.setOnClickListener {
-            val pesananFragment = PesananFragment()
+        view.findViewById<View>(R.id.profilpesanan).setOnClickListener {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.editprofil, pesananFragment) // Ganti dengan ID container layout-mu
+                .replace(R.id.editprofil, PesananFragment())
                 .addToBackStack(null)
                 .commit()
         }
 
-        val pengaturanProfil: View = view.findViewById(R.id.profilpengaturan)
-        pengaturanProfil.setOnClickListener {
-            val pengaturanFragment = PengaturanFragment()
+        view.findViewById<View>(R.id.profilpengaturan).setOnClickListener {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.editprofil, pengaturanFragment) // Ganti dengan ID container layout-mu
+                .replace(R.id.editprofil, PengaturanFragment())
                 .addToBackStack(null)
                 .commit()
         }
 
-
-        val PusatBantuanProfil: View = view.findViewById(R.id.profilpusatbantuan)
-        PusatBantuanProfil.setOnClickListener {
-            val pusatbantuanFragment = PusatBantuanFragment()
+        view.findViewById<View>(R.id.profilpusatbantuan).setOnClickListener {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.editprofil, pusatbantuanFragment) // Ganti dengan ID container layout-mu
+                .replace(R.id.editprofil, PusatBantuanFragment())
                 .addToBackStack(null)
                 .commit()
         }
-
     }
 
     private fun loadUserData() {
         val sharedPref = requireActivity().getSharedPreferences("user_profile", Context.MODE_PRIVATE)
-        val savedName = sharedPref.getString("nama", "onyourmark")
-        val savedImageUriString = sharedPref.getString("profileImageUri", null)
+        val savedEmail = sharedPref.getString("email", null)
+        val savedImageUri = sharedPref.getString("profileImageUri", null)
 
-        tvUserName.text = savedName
-        if (!savedImageUriString.isNullOrEmpty()) {
-            ivProfile.setImageURI(Uri.parse(savedImageUriString))
+        if (savedEmail != null) {
+            database = FirebaseDatabase.getInstance().getReference("users")
+
+            database.orderByChild("email").equalTo(savedEmail)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            for (userSnapshot in snapshot.children) {
+                                val username = userSnapshot.child("username").getValue(String::class.java)
+                                tvUserName.text = username ?: "User"
+                            }
+                        } else {
+                            tvUserName.text = "Email tidak ditemukan"
+                        }
+
+                        // Setel gambar profil dari SharedPreferences setelah data Firebase dimuat
+                        if (!savedImageUri.isNullOrEmpty()) {
+                            try {
+                                ivProfile.setImageURI(Uri.parse(savedImageUri))
+                            } catch (e: SecurityException) {
+                                Toast.makeText(requireContext(), "Gagal menampilkan gambar profil", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Toast.makeText(requireContext(), "Gagal memuat data", Toast.LENGTH_SHORT).show()
+                    }
+                })
+        } else {
+            tvUserName.text = "Belum login"
         }
     }
 }
