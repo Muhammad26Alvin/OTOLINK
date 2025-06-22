@@ -1,18 +1,25 @@
 package com.example.uastam.ui.iklan
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.uastam.R
-import com.example.uastam.ui.sampel.Sampel1Fragment
-import com.example.uastam.ui.sampel.Sampel2Fragment
-import com.example.uastam.ui.sampel.Sampel3Fragment
-import com.example.uastam.ui.sampel.Sampel4Fragment
+import com.example.uastam.ui.kategori.AdapterClassMobil
+import com.example.uastam.ui.kategori.DataClassMobil
+import com.example.uastam.ui.kategori.DetailMobilFragment
+import com.google.firebase.database.*
 
 class IklanFragment : Fragment() {
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: AdapterClassMobil
+    private val favoriteList = mutableListOf<DataClassMobil>()
 
     override fun onResume() {
         super.onResume()
@@ -31,59 +38,42 @@ class IklanFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // List ID favorit icon
-        val favoriteIcons = listOf(
-            view.findViewById<ImageView>(R.id.icon_favorite1),
-            view.findViewById<ImageView>(R.id.icon_favorite2),
-            view.findViewById<ImageView>(R.id.icon_favorite3),
-            view.findViewById<ImageView>(R.id.icon_favorite4)
-        )
+        recyclerView = view.findViewById(R.id.recyclerfavourite)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        // Status favorit tiap icon
-        val favoriteStates = mutableListOf(false, false, false, false)
+        adapter = AdapterClassMobil(favoriteList) { selectedItem ->
+            val detailFragment = DetailMobilFragment.newInstance(selectedItem)
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.container, detailFragment)
+                .addToBackStack(null)
+                .commit()
+        }
+        recyclerView.adapter = adapter
 
-        // Set onClickListener untuk toggle icon
-        favoriteIcons.forEachIndexed { index, icon ->
-            icon.setOnClickListener {
-                favoriteStates[index] = !favoriteStates[index]
-                icon.setImageResource(
-                    if (favoriteStates[index]) R.drawable.ic_love else R.drawable.ic_favorite
-                )
+        loadFavoriteData()
+    }
+
+    private fun loadFavoriteData() {
+        val sharedPref = requireActivity().getSharedPreferences("user_profile", Context.MODE_PRIVATE)
+        val username = sharedPref.getString("username", null) ?: return
+        val favoritRef = FirebaseDatabase.getInstance().getReference("favorit/$username")
+
+        favoritRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                favoriteList.clear()
+                for (itemSnapshot in snapshot.children) {
+                    val data = itemSnapshot.getValue(DataClassMobil::class.java)
+                    data?.let {
+                        it.isFavorite = true // wajib tandai sebagai favorit
+                        favoriteList.add(it)
+                    }
+                }
+                adapter.updateData(favoriteList)
             }
-        }
 
-        // Klik item untuk pindah ke Sampel1Fragment
-        val item1 = view.findViewById<View>(R.id.favorite1)
-        item1.setOnClickListener {
-            val transaction = parentFragmentManager.beginTransaction()
-            transaction.replace(R.id.container, Sampel1Fragment())
-            transaction.addToBackStack(null)
-            transaction.commit()
-        }
-
-        // Klik item untuk pindah ke Sampel1Fragment
-        val item2 = view.findViewById<View>(R.id.favorite2)
-        item2.setOnClickListener {
-            val transaction = parentFragmentManager.beginTransaction()
-            transaction.replace(R.id.container, Sampel2Fragment())
-            transaction.addToBackStack(null)
-            transaction.commit()
-        }
-        // Klik item untuk pindah ke Sampel1Fragment
-        val item3 = view.findViewById<View>(R.id.favorite3)
-        item3.setOnClickListener {
-            val transaction = parentFragmentManager.beginTransaction()
-            transaction.replace(R.id.container, Sampel3Fragment())
-            transaction.addToBackStack(null)
-            transaction.commit()
-        }
-        // Klik item untuk pindah ke Sampel1Fragment
-        val item4 = view.findViewById<View>(R.id.favorite4)
-        item4.setOnClickListener {
-            val transaction = parentFragmentManager.beginTransaction()
-            transaction.replace(R.id.container, Sampel4Fragment())
-            transaction.addToBackStack(null)
-            transaction.commit()
-        }
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(context, "Gagal memuat favorit", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }

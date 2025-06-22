@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.example.uastam.R
 
 class DetailMotorFragment : Fragment() {
@@ -40,21 +41,26 @@ class DetailMotorFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<ImageView>(R.id.gambardetailmotor).setImageResource(motor.imageResId)
+        val imageView = view.findViewById<ImageView>(R.id.gambardetailmotor)
+        Glide.with(this)
+            .load(motor.imageUri)
+            .placeholder(R.drawable.ic_launcher_background)
+            .error(R.drawable.ic_launcher_background)
+            .into(imageView)
+
         view.findViewById<TextView>(R.id.hargamotor).text = motor.harga
         view.findViewById<TextView>(R.id.deskripsimotor).text = motor.deskripsi
         view.findViewById<TextView>(R.id.spesifikasimotor).text = motor.tahun
-        view.findViewById<TextView>(R.id.lokasimotor).text = motor.lokasi
+        view.findViewById<TextView>(R.id.lokasimotor).text = motor.alamat
         view.findViewById<TextView>(R.id.tipedetailmotor).text = motor.tipe
-        view.findViewById<TextView>(R.id.merkdetailmotor).text = motor.merkModel
+        view.findViewById<TextView>(R.id.merkdetailmotor).text = motor.merk
         view.findViewById<TextView>(R.id.tahundetailmotor).text = motor.tahun
-        view.findViewById<TextView>(R.id.kilometerdetailmotor).text = motor.kilometer
+        view.findViewById<TextView>(R.id.kilometerdetailmotor).text = motor.jarak
         view.findViewById<TextView>(R.id.warnadetailmotor).text = motor.warna
         view.findViewById<TextView>(R.id.transmisidetailmotor).text = motor.transmisi
         view.findViewById<TextView>(R.id.sertifikasidetailmotor).text = motor.sertifikasi
-        view.findViewById<TextView>(R.id.lokasidetailmotor).text = motor.alamatLokasi
-        view.findViewById<TextView>(R.id.namapenjualmotor).text = motor.namapenjual
-
+        view.findViewById<TextView>(R.id.lokasidetailmotor).text = motor.alamat
+        view.findViewById<TextView>(R.id.namapenjualmotor).text = motor.penjual
 
         view.findViewById<ImageView>(R.id.btnBack).setOnClickListener {
             requireActivity().onBackPressed()

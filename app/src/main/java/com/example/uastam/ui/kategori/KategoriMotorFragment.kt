@@ -1,16 +1,19 @@
 package com.example.uastam.ui.kategori
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.uastam.R
-import com.example.uastam.ui.kategori.KategoriMotorFragment
+import com.google.firebase.database.*
 
 class KategoriMotorFragment : Fragment() {
 
@@ -22,7 +25,8 @@ class KategoriMotorFragment : Fragment() {
     }
 
     private lateinit var adapter: AdapterClassMotor
-    private lateinit var fullList: List<DataClassMotor>
+    private var fullList: MutableList<DataClassMotor> = mutableListOf()
+    private lateinit var dbRef: DatabaseReference
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,85 +45,34 @@ class KategoriMotorFragment : Fragment() {
         btnBack.setOnClickListener { requireActivity().onBackPressed() }
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-        fullList = listOf(
-            DataClassMotor(
-                R.drawable.sampelmobil1,
-                "Rp 15.000.000",
-                "KOENIGSEGG AGERA RS",
-                "2022",
-                "Rajabasa, Bandar Lampung",
-                "KOENIGSEGG AGERA RS",
-                "MOBIL SPORT",
-                "7.000",
-                "BLACK DOVE",
-                "AUTOMATIC 7-SPEED DUAL CLUTCH",
-                "STNK & BPKB LENGKAP",
-                "RAJABASA, BANDAR LAMPUNG",
-                "MUHAMMAD ALVIN"
-            ),
-            DataClassMotor(
-                R.drawable.sampel3,
-                "Rp 15.000.000",
-                "Vario 160 Second",
-                "2020",
-                "Sukarame, Bandar Lampung",
-                "Skuter Matic",
-                "Honda Vario 160",
-                "7.000",
-                "Hitam",
-                "CVT",
-                "STNK & BPKB Lengkap",
-                "Sukarame, Bandar Lampung",
-                "Muhammad Alvin"
-            ),
-            DataClassMotor(
-                R.drawable.sampel3,
-                "Rp 15.000.000",
-                "Vario 160 Second",
-                "2020",
-                "Sukarame, Bandar Lampung",
-                "Skuter Matic",
-                "Honda Vario 160",
-                "7.000",
-                "Hitam",
-                "CVT",
-                "STNK & BPKB Lengkap",
-                "Sukarame, Bandar Lampung",
-                "Muhammad Alvin"
-            ),
-            DataClassMotor(
-                R.drawable.sampel3,
-                "Rp 15.000.000",
-                "Vario 160 Second",
-                "2020",
-                "Sukarame, Bandar Lampung",
-                "Skuter Matic",
-                "Honda Vario 160",
-                "7.000",
-                "Hitam",
-                "CVT",
-                "STNK & BPKB Lengkap",
-                "Sukarame, Bandar Lampung",
-                "Muhammad Alvin"
-            )
-
-        )
-
-
-        adapter = AdapterClassMotor(fullList.toMutableList()) { selectedMotor ->
+        adapter = AdapterClassMotor(fullList) { selectedMotor ->
             val detailFragment = DetailMotorFragment.newInstance(selectedMotor)
             parentFragmentManager.beginTransaction()
                 .replace(R.id.motorcontainer, detailFragment)
                 .addToBackStack(null)
                 .commit()
         }
-
         recyclerView.adapter = adapter
 
-        searchBar.addTextChangedListener(object : android.text.TextWatcher {
+        dbRef = FirebaseDatabase.getInstance().getReference("jualan/motor")
+        dbRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                fullList.clear()
+                for (child in snapshot.children) {
+                    val data = child.getValue(DataClassMotor::class.java)
+                    data?.let { fullList.add(it) }
+                }
+                adapter.updateData(fullList)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(requireContext(), "Gagal memuat data: ${error.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        searchBar.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun afterTextChanged(s: android.text.Editable?) {}
+            override fun afterTextChanged(s: Editable?) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 filterList(s.toString())
             }
@@ -130,7 +83,7 @@ class KategoriMotorFragment : Fragment() {
         val filtered = fullList.filter {
             it.deskripsi.contains(query, ignoreCase = true) ||
                     it.harga.contains(query, ignoreCase = true) ||
-                    it.lokasi.contains(query, ignoreCase = true)
+                    it.alamat.contains(query, ignoreCase = true)
         }
         adapter.updateData(filtered)
     }

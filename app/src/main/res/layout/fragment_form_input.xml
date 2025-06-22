@@ -85,13 +85,14 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Merek"
+                android:text="Tipe"
                 android:textStyle="bold"
                 android:textColor="@color/dark_blue"/>
             <EditText
+                android:id="@+id/tipebarang"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Masukan Merek"
+                android:hint="Masukan Tipe"
                 android:background="@drawable/edit_text_bg"
                 android:padding="12dp"
                 android:layout_marginBottom="12dp"/>
@@ -100,13 +101,14 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tahun"
+                android:text="Merk dan Model"
                 android:textStyle="bold"
                 android:textColor="@color/dark_blue"/>
             <EditText
+                android:id="@+id/merkbarang"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Masukan Tahun"
+                android:hint="Masukan Merk dan Model"
                 android:background="@drawable/edit_text_bg"
                 android:padding="12dp"
                 android:layout_marginBottom="12dp"/>
@@ -115,13 +117,14 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Jarak Tempuh"
+                android:text="Tahun"
                 android:textStyle="bold"
                 android:textColor="@color/dark_blue"/>
             <EditText
+                android:id="@+id/tahunbarang"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Masukan Jarak Tempuh"
+                android:hint="Masukan Tahun"
                 android:background="@drawable/edit_text_bg"
                 android:padding="12dp"
                 android:layout_marginBottom="12dp"/>
@@ -130,13 +133,14 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tipe Bahan Bakar"
+                android:text="Jarak Tempuh"
                 android:textStyle="bold"
                 android:textColor="@color/dark_blue"/>
             <EditText
+                android:id="@+id/jaraktempuhbarang"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Masukan Tipe Bahan Bakar"
+                android:hint="Masukan Jarak tempuh"
                 android:background="@drawable/edit_text_bg"
                 android:padding="12dp"
                 android:layout_marginBottom="12dp"/>
@@ -149,6 +153,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/dark_blue"/>
             <EditText
+                android:id="@+id/warnabarang"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Masukan Warna"
@@ -160,13 +165,14 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tipe Bodi"
+                android:text="Tipe Transmisi"
                 android:textStyle="bold"
                 android:textColor="@color/dark_blue"/>
             <EditText
+                android:id="@+id/transmisibarang"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Masukan Tipe Bodi"
+                android:hint="Masukan Tipe Transmisi"
                 android:background="@drawable/edit_text_bg"
                 android:padding="12dp"
                 android:layout_marginBottom="12dp"/>
@@ -175,13 +181,14 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Kapasitas Mesin"
+                android:text="Sertifikasi"
                 android:textStyle="bold"
                 android:textColor="@color/dark_blue"/>
             <EditText
+                android:id="@+id/sertifikasibarang"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Masukan Kapasitas Mesin"
+                android:hint="Sertifikasi"
                 android:background="@drawable/edit_text_bg"
                 android:padding="12dp"
                 android:layout_marginBottom="24dp"/>

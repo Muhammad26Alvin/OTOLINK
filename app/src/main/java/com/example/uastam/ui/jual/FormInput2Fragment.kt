@@ -1,19 +1,32 @@
 package com.example.uastam.ui.jual
 
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+import android.widget.*
+import androidx.fragment.app.Fragment
+import com.example.uastam.ImgurUploader
 import com.example.uastam.MainActivity
 import com.example.uastam.R
+import com.google.android.material.button.MaterialButton
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+
 class FormInput2Fragment : Fragment() {
+
+    private lateinit var judulInput: EditText
+    private lateinit var deskripsiInput: EditText
+    private lateinit var alamatInput: EditText
+    private lateinit var hargaInput: EditText
+    private lateinit var btnLanjut: MaterialButton
+    private lateinit var closeBtn: ImageView
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_form_input2, container, false)
     }
 
@@ -22,9 +35,112 @@ class FormInput2Fragment : Fragment() {
 
         (activity as? MainActivity)?.showBottomBar(false)
 
-        val btnBack: ImageView = view.findViewById(R.id.close)
-        btnBack.setOnClickListener {
+        // Bind View
+        judulInput = view.findViewById(R.id.judulbarang)
+        deskripsiInput = view.findViewById(R.id.deskripsibarang)
+        alamatInput = view.findViewById(R.id.alamatbarang)
+        hargaInput = view.findViewById(R.id.hargabarang)
+        btnLanjut = view.findViewById(R.id.btnform2)
+        closeBtn = view.findViewById(R.id.close)
+
+        closeBtn.setOnClickListener {
             requireActivity().onBackPressed()
+        }
+
+        // Ambil data dari FormInputFragment lewat arguments
+        val args = arguments
+        val tipe = args?.getString("tipe")
+        val merk = args?.getString("merk")
+        val tahun = args?.getString("tahun")
+        val jarak = args?.getString("jarak")
+        val warna = args?.getString("warna")
+        val transmisi = args?.getString("transmisi")
+        val sertifikasi = args?.getString("sertifikasi")
+        val kategori = if (args?.getString("tipe").equals("Motor", ignoreCase = true)) "motor" else "mobil"
+        val imageUriString = args?.getString("imageUri")
+
+        btnLanjut.setOnClickListener {
+            val judul = judulInput.text.toString()
+            val deskripsi = deskripsiInput.text.toString()
+            val alamat = alamatInput.text.toString()
+            val hargaText = hargaInput.text.toString()
+            val harga = if (hargaText.startsWith("Rp")) hargaText else "Rp $hargaText"
+
+            if (judul.isEmpty() || deskripsi.isEmpty() || alamat.isEmpty() || harga.isEmpty()) {
+                Toast.makeText(requireContext(), "Mohon lengkapi semua data", Toast.LENGTH_SHORT)
+                    .show()
+                return@setOnClickListener
+            }
+
+            val user = FirebaseAuth.getInstance().currentUser
+            val namaUser = user?.displayName ?: "Anonim"
+
+            val imageUri = imageUriString?.let { Uri.parse(it) }
+
+            if (imageUri == null) {
+                Toast.makeText(requireContext(), "Gambar tidak ditemukan", Toast.LENGTH_SHORT)
+                    .show()
+                return@setOnClickListener
+            }
+
+            // ✅ Upload ke Imgur
+            btnLanjut.isEnabled = false
+            btnLanjut.text = "Mengunggah gambar..."
+
+            ImgurUploader.uploadImage(requireContext(), imageUri) { imageUrl ->
+                requireActivity().runOnUiThread {
+                    btnLanjut.isEnabled = true
+                    btnLanjut.text = "Simpan"
+
+                    if (imageUrl == null) {
+                        Toast.makeText(requireContext(), "Gagal upload gambar", Toast.LENGTH_SHORT)
+                            .show()
+                        return@runOnUiThread
+                    }
+
+                    val data = hashMapOf<String, Any?>(
+                        "judul" to judul,
+                        "deskripsi" to deskripsi,
+                        "alamat" to alamat,
+                        "harga" to harga,
+                        "tipe" to tipe,
+                        "merk" to merk,
+                        "tahun" to tahun,
+                        "jarak" to jarak,
+                        "warna" to warna,
+                        "transmisi" to transmisi,
+                        "sertifikasi" to sertifikasi,
+                        "kategori" to kategori,
+                        "imageUri" to imageUrl,
+                        "penjual" to namaUser
+                    )
+
+                    val dbRef = FirebaseDatabase.getInstance()
+                        .getReference("jualan/${kategori.lowercase()}")
+                    val key = dbRef.push().key
+                    key?.let {
+                        dbRef.child(it).setValue(data).addOnSuccessListener {
+                            Toast.makeText(
+                                requireContext(),
+                                "Barang berhasil diunggah!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            requireActivity().onBackPressed()
+                        }.addOnFailureListener {
+                            Toast.makeText(
+                                requireContext(),
+                                "Gagal unggah: ${it.message}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                }
+            }
         }
     }
 }
+
+
+
+
+
