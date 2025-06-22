@@ -1,5 +1,6 @@
 package com.example.uastam.ui.account
 
+import ImgurResponse
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -17,6 +18,13 @@ import android.widget.Toast
 import com.example.uastam.R
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.DatabaseReference
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.InputStream
 
 class EditProfileFragment : Fragment() {
 
@@ -49,21 +57,14 @@ class EditProfileFragment : Fragment() {
         btnSimpan = view.findViewById(R.id.btnsimpan)
 
         val btnBack: ImageView = view.findViewById(R.id.close)
-        btnBack.setOnClickListener {
-            requireActivity().onBackPressed()
-        }
+        btnBack.setOnClickListener { requireActivity().onBackPressed() }
 
         database = FirebaseDatabase.getInstance().getReference("users")
 
-        ivProfile.setOnClickListener {
-            openGalleryForImage()
-        }
-
+        ivProfile.setOnClickListener { openGalleryForImage() }
         loadProfile()
 
-        btnSimpan.setOnClickListener {
-            saveProfile()
-        }
+        btnSimpan.setOnClickListener { saveProfile() }
     }
 
     private fun openGalleryForImage() {
@@ -75,9 +76,7 @@ class EditProfileFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
             imageUri = data?.data
-            if (imageUri != null) {
-                ivProfile.setImageURI(imageUri)
-            }
+            ivProfile.setImageURI(imageUri)
         }
     }
 
@@ -92,18 +91,51 @@ class EditProfileFragment : Fragment() {
             return
         }
 
-        val sharedPref = requireActivity().getSharedPreferences("user_profile", Context.MODE_PRIVATE)
-        val oldUsername = sharedPref.getString("username", null) ?: newUsername
+        if (imageUri != null) {
+            val inputStream: InputStream? = requireContext().contentResolver.openInputStream(imageUri!!)
+            val bytes = inputStream?.readBytes()
+            inputStream?.close()
 
-        // Simpan ke SharedPreferences
+            if (bytes != null) {
+                val requestFile = MultipartBody.Part.createFormData(
+                    "image", "profile.jpg",
+                    bytes.toRequestBody("image/*".toMediaTypeOrNull())
+                )
+
+                val clientId = "Client-ID 06db70966b90761" // Tambahkan "Client-ID " di depannya
+                ImgurClient.instance.uploadImage(clientId, requestFile)
+                    .enqueue(object : Callback<ImgurResponse> {
+                        override fun onResponse(call: Call<ImgurResponse>, response: Response<ImgurResponse>) {
+                            if (response.isSuccessful && response.body() != null) {
+                                val imgurLink = response.body()!!.data.link
+                                saveToFirebase(newUsername, info, nomorTelepon, email, imgurLink)
+                            } else {
+                                Toast.makeText(requireContext(), "Gagal upload ke Imgur", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+
+                        override fun onFailure(call: Call<ImgurResponse>, t: Throwable) {
+                            Toast.makeText(requireContext(), "Upload error: ${t.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+            }
+        } else {
+            val sharedPref = requireActivity().getSharedPreferences("user_profile", Context.MODE_PRIVATE)
+            val prevUri = sharedPref.getString("profileImageUri", null)
+            saveToFirebase(newUsername, info, nomorTelepon, email, prevUri)
+        }
+    }
+
+    private fun saveToFirebase(username: String, info: String, nomorTelepon: String, email: String, imageUrl: String?) {
+        val sharedPref = requireActivity().getSharedPreferences("user_profile", Context.MODE_PRIVATE)
+        val oldUsername = sharedPref.getString("username", null) ?: username
+
         with(sharedPref.edit()) {
-            putString("username", newUsername)
+            putString("username", username)
             putString("info", info)
             putString("nomorTelepon", nomorTelepon)
             putString("email", email)
-            if (imageUri != null) {
-                putString("profileImageUri", imageUri.toString())
-            }
+            if (imageUrl != null) putString("profileImageUri", imageUrl)
             apply()
         }
 
@@ -112,40 +144,25 @@ class EditProfileFragment : Fragment() {
             val confirmPassword = snapshot.child("confirmpassword").value?.toString() ?: ""
 
             val updatedUser = mapOf(
-                "username" to newUsername,
+                "username" to username,
                 "email" to email,
                 "info" to info,
                 "nomorTelepon" to nomorTelepon,
                 "password" to password,
-                "confirmpassword" to confirmPassword
+                "confirmpassword" to confirmPassword,
+                "profileImageUri" to imageUrl
             )
 
-            if (oldUsername != newUsername) {
-                database.child(oldUsername).removeValue()
-            }
+            if (oldUsername != username) database.child(oldUsername).removeValue()
 
-            database.child(newUsername).setValue(updatedUser)
+            database.child(username).setValue(updatedUser)
                 .addOnSuccessListener {
-                    if (!isAdded) return@addOnSuccessListener
-
-                    val resultBundle = Bundle().apply {
-                        putString("newName", newUsername)
-                        putString("newImageUri", imageUri?.toString())
-                    }
-                    parentFragmentManager.setFragmentResult("requestKeyName", resultBundle)
-
-                    Toast.makeText(requireContext(), "Data Firebase disimpan", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Berhasil simpan ke Firebase", Toast.LENGTH_SHORT).show()
                     parentFragmentManager.popBackStack()
                 }
                 .addOnFailureListener {
-                    if (isAdded) {
-                        Toast.makeText(requireContext(), "Gagal simpan ke Firebase", Toast.LENGTH_SHORT).show()
-                    }
+                    Toast.makeText(requireContext(), "Gagal simpan ke Firebase", Toast.LENGTH_SHORT).show()
                 }
-        }.addOnFailureListener {
-            if (isAdded) {
-                Toast.makeText(requireContext(), "Gagal ambil data lama", Toast.LENGTH_SHORT).show()
-            }
         }
     }
 

@@ -13,6 +13,8 @@ import com.denzcoskun.imageslider.ImageSlider
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
 import com.example.uastam.R
+import com.example.uastam.ui.kategori.KategoriMobilFragment
+import com.example.uastam.ui.kategori.KategoriMotorFragment
 import com.example.uastam.ui.sampel.*
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -45,6 +47,22 @@ class HomeFragment : Fragment() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
         getLocation()
+
+        val logomobil = view.findViewById<View>(R.id.homelogomobil)
+        logomobil.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.container, KategoriMobilFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
+        val logomotor = view.findViewById<View>(R.id.homelogomotor)
+        logomotor.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.container, KategoriMotorFragment())
+                .addToBackStack(null)
+                .commit()
+        }
 
         val id1 = view.findViewById<View>(R.id.Item1)
         id1.setOnClickListener {

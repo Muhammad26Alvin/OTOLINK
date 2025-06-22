@@ -15,18 +15,15 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // ✅ Cek apakah sudah login
         val sharedPref = getSharedPreferences("user_profile", Context.MODE_PRIVATE)
         val isLoggedIn = sharedPref.getBoolean("isLoggedIn", false)
 
         if (isLoggedIn) {
-            // ✅ Jika sudah login langsung ke MainActivity
             startActivity(Intent(this, MainActivity::class.java))
-            finish() // tutup LoginActivity agar tidak bisa kembali
+            finish()
             return
         }
 
-        // ✅ Belum login, tampilkan halaman login biasa
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
 

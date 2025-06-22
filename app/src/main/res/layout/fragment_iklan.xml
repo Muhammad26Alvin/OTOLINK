@@ -45,9 +45,6 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Favorite Cards -->
-        <!-- Ulangi struktur ini jika ingin menambahkan lebih banyak kartu -->
-
         <!-- Mulai Card -->
         <androidx.cardview.widget.CardView
             android:id="@+id/favorite1"

@@ -64,6 +64,11 @@ class KatasandiFragment : Fragment() {
             repeatPassword.setSelection(repeatPassword.text.length)
         }
 
+        val btnBack: ImageView = view.findViewById(R.id.close)
+        btnBack.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
+
         btnkatasandi.setOnClickListener {
             val newPassword = editPassword.text.toString()
             val repeatPass = repeatPassword.text.toString()
