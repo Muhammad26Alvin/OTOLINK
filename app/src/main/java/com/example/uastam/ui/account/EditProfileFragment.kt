@@ -15,6 +15,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import com.bumptech.glide.Glide
 import com.example.uastam.R
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.DatabaseReference
@@ -91,7 +92,7 @@ class EditProfileFragment : Fragment() {
             return
         }
 
-        if (imageUri != null) {
+        if (imageUri != null && imageUri!!.scheme?.startsWith("content") == true) {
             val inputStream: InputStream? = requireContext().contentResolver.openInputStream(imageUri!!)
             val bytes = inputStream?.readBytes()
             inputStream?.close()
@@ -102,7 +103,7 @@ class EditProfileFragment : Fragment() {
                     bytes.toRequestBody("image/*".toMediaTypeOrNull())
                 )
 
-                val clientId = "Client-ID 06db70966b90761" // Tambahkan "Client-ID " di depannya
+                val clientId = "Client-ID 06db70966b90761"
                 ImgurClient.instance.uploadImage(clientId, requestFile)
                     .enqueue(object : Callback<ImgurResponse> {
                         override fun onResponse(call: Call<ImgurResponse>, response: Response<ImgurResponse>) {
@@ -182,14 +183,12 @@ class EditProfileFragment : Fragment() {
                 etNomorTelepon.setText(snapshot.child("nomorTelepon").value?.toString() ?: "")
                 etEmail.setText(snapshot.child("email").value?.toString() ?: "")
 
-                val imageUriString = sharedPref.getString("profileImageUri", null)
+                val imageUriString = snapshot.child("profileImageUri").value?.toString()
                 if (!imageUriString.isNullOrEmpty()) {
-                    imageUri = Uri.parse(imageUriString)
-                    try {
-                        ivProfile.setImageURI(imageUri)
-                    } catch (e: SecurityException) {
-                        Toast.makeText(requireContext(), "Gagal memuat gambar. Coba pilih ulang.", Toast.LENGTH_SHORT).show()
-                    }
+                    Glide.with(this)
+                        .load(imageUriString)
+                        .placeholder(R.drawable.ic_launcher_background)
+                        .into(ivProfile)
                 }
             } else {
                 Toast.makeText(requireContext(), "Data tidak ditemukan di Firebase", Toast.LENGTH_SHORT).show()

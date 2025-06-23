@@ -3,6 +3,7 @@ package com.example.uastam.ui.kategori
 import java.io.Serializable
 
 data class DataClassMotor(
+    var judul: String = "",
     var imageUri: String? = null,
     var harga: String = "",
     var deskripsi: String = "",
@@ -18,6 +19,5 @@ data class DataClassMotor(
     var penjual: String = "",
     var isFavorite: Boolean = false
 ) : Serializable {
-
-    constructor() : this("", "", "", "", "", "", "", "", "", "", "", "", "", false)
+    constructor() : this("","", "", "", "", "", "", "", "", "", "", "", "", "", false)
 }

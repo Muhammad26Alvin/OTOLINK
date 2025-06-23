@@ -1,6 +1,7 @@
 package com.example.uastam.ui.kategori
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,6 +56,8 @@ class AdapterClassMobil(
         holder.favoriteIcon.setImageResource(iconRes)
 
         holder.favoriteIcon.setOnClickListener {
+            Log.d("FAVORITE_CLICK", "KLIK FAVORIT ${item.judul}")
+            Toast.makeText(holder.itemView.context, "Klik: ${item.judul}", Toast.LENGTH_SHORT).show()
             val isFavorited = !item.isFavorite
             item.isFavorite = isFavorited
             notifyItemChanged(position)
@@ -69,7 +72,7 @@ class AdapterClassMobil(
             }
 
             val dbRef = FirebaseDatabase.getInstance().getReference("favorit/$username")
-            val key = item.judul ?: dbRef.push().key ?: return@setOnClickListener
+            val key = if (item.judul.isNotBlank()) item.judul else dbRef.push().key ?: return@setOnClickListener
 
             if (isFavorited) {
                 dbRef.child(key).setValue(item.copy(isFavorite = true))

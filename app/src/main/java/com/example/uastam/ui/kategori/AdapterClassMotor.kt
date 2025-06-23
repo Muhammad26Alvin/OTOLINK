@@ -1,13 +1,17 @@
 package com.example.uastam.ui.kategori
 
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.uastam.R
+import com.google.firebase.database.FirebaseDatabase
 
 class AdapterClassMotor(
     private var datalist: MutableList<DataClassMotor>,
@@ -52,8 +56,29 @@ class AdapterClassMotor(
         holder.favoriteIcon.setImageResource(iconRes)
 
         holder.favoriteIcon.setOnClickListener {
-            item.isFavorite = !item.isFavorite
+            Log.d("FAVORITE_CLICK", "KLIK FAVORIT ${item.judul}")
+            Toast.makeText(holder.itemView.context, "Klik: ${item.judul}", Toast.LENGTH_SHORT).show()
+            val isFavorited = !item.isFavorite
+            item.isFavorite = isFavorited
             notifyItemChanged(position)
+
+            val context = holder.itemView.context
+            val sharedPref = context.getSharedPreferences("user_profile", Context.MODE_PRIVATE)
+            val username = sharedPref.getString("username", null)
+
+            if (username.isNullOrEmpty()) {
+                Toast.makeText(context, "User belum login", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val dbRef = FirebaseDatabase.getInstance().getReference("favorit/$username")
+            val key = if (item.judul.isNotBlank()) item.judul else dbRef.push().key ?: return@setOnClickListener
+
+            if (isFavorited) {
+                dbRef.child(key).setValue(item.copy(isFavorite = true))
+            } else {
+                dbRef.child(key).removeValue()
+            }
         }
 
         holder.itemView.setOnClickListener {

@@ -3,13 +3,13 @@ package com.example.uastam.ui.itemchat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.uastam.R
 
 class chatadapter(
-    private var messageList: List<Message>
+    private var messageList: List<Message>,
+    private val currentUser: String
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -17,9 +17,8 @@ class chatadapter(
         private const val VIEW_TYPE_RIGHT = 1
     }
 
-    // Tentukan tipe view berdasarkan siapa pengirim
     override fun getItemViewType(position: Int): Int {
-        return if (messageList[position].isSentByUser) VIEW_TYPE_RIGHT else VIEW_TYPE_LEFT
+        return if (messageList[position].sender == currentUser) VIEW_TYPE_RIGHT else VIEW_TYPE_LEFT
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -36,21 +35,16 @@ class chatadapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val message = messageList[position]
-        if (holder is RightViewHolder) {
-            holder.bind(message)
-        } else if (holder is LeftViewHolder) {
-            holder.bind(message)
-        }
+        if (holder is RightViewHolder) holder.bind(message)
+        else if (holder is LeftViewHolder) holder.bind(message)
     }
 
     override fun getItemCount(): Int = messageList.size
 
-    fun addMessage(message: Message) {
-        messageList = messageList + message
-        notifyItemInserted(messageList.size - 1)
+    fun setMessages(messages: List<Message>) {
+        this.messageList = messages
+        notifyDataSetChanged()
     }
-
-    fun getMessages(): List<Message> = messageList
 
     class LeftViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val textMessage: TextView = itemView.findViewById(R.id.textMessage)
@@ -66,3 +60,4 @@ class chatadapter(
         }
     }
 }
+

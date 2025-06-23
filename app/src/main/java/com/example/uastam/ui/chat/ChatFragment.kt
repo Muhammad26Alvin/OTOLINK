@@ -1,6 +1,8 @@
 package com.example.uastam.ui.chat
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,11 +15,13 @@ import com.example.uastam.ui.itemchat.ChatDetailFragment
 import com.example.uastam.ui.itemchat.ChatItem
 import com.example.uastam.ui.itemchat.ChatListAdapter
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.database.*
 
 class ChatFragment : Fragment() {
+
     private lateinit var recyclerView: RecyclerView
-    private lateinit var chatList: List<ChatItem>
     private lateinit var adapter: ChatListAdapter
+    private val chatList = mutableListOf<ChatItem>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,26 +33,17 @@ class ChatFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Tombol kembali
         view.findViewById<ImageView>(R.id.btnclose)?.setOnClickListener {
             requireActivity().onBackPressed()
         }
 
         val tabLayout = view.findViewById<TabLayout>(R.id.tabLayoutChat)
         recyclerView = view.findViewById(R.id.recyclerViewChat)
-        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        // Contoh data chatList
-        chatList = listOf(
-            ChatItem("onyourmark", "", R.drawable.profilepict),
-            ChatItem("john_doe", "", R.drawable.profilepict),
-            ChatItem("alice", "", R.drawable.profilepict)
-        )
-
-        // Adapter dengan klik listener untuk buka ChatDetailFragment
+        // Inisialisasi adapter dengan klik listener
         adapter = ChatListAdapter(chatList) { chat ->
-            // Debug log
-            android.util.Log.d("ChatFragment", "Clicked chat: ${chat.nama}")
-
             val chatDetailFragment = ChatDetailFragment().apply {
                 arguments = Bundle().apply {
                     putString("NAMA_CHAT", chat.nama)
@@ -62,24 +57,65 @@ class ChatFragment : Fragment() {
 
         recyclerView.adapter = adapter
 
-        // Setup tabs
+        // Tambahkan tab
         listOf("Semua", "Pembelian", "Menjual").forEach {
             tabLayout.addTab(tabLayout.newTab().setText(it))
         }
 
+        // Listener tab
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 filterByTab(tab.text.toString())
             }
+
             override fun onTabUnselected(tab: TabLayout.Tab) {}
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
 
+        // Default pilih tab pertama
         tabLayout.getTabAt(0)?.select()
+
+        // Ambil data chat
+        fetchChatList()
+    }
+
+    private fun fetchChatList() {
+        val currentUsername = getLoggedInUsername()
+        Log.d("ChatFragment", "Username login: $currentUsername")
+
+        if (currentUsername.isEmpty()) {
+            Log.e("ChatFragment", "Username kosong, tidak bisa ambil chat list")
+            return
+        }
+
+        val dbRef = FirebaseDatabase.getInstance()
+            .getReference("chats")
+            .child(currentUsername)
+
+        dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                chatList.clear()
+                for (child in snapshot.children) {
+                    val receiver = child.key ?: continue
+                    chatList.add(ChatItem(nama = receiver))
+                }
+                adapter.updateData(chatList)
+                Log.d("ChatFragment", "Berhasil ambil daftar chat, total: ${chatList.size}")
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("ChatFragment", "Gagal ambil data chat: ${error.message}")
+            }
+        })
     }
 
     private fun filterByTab(tab: String) {
-        // Dummy filter: tetap tampil semua chat
+        // Untuk sekarang hanya tampilkan semua (belum ada kategori)
         adapter.updateData(chatList)
+    }
+
+    private fun getLoggedInUsername(): String {
+        val prefs = requireContext().getSharedPreferences("user_profile", Context.MODE_PRIVATE)
+        return prefs.getString("username", "") ?: ""
     }
 }

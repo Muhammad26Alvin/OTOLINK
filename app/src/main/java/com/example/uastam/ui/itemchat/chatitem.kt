@@ -21,12 +21,14 @@ object ChatPrefs {
 
 
 data class ChatItem(
-    val nama: String,
-    val pesanTerakhir: String,
-    val avatarResId: Int
+    val nama: String = "",
+    val lastMessage: String = "",
+    val profileImageRes: Int = 0
 )
 
 data class Message(
-    val text: String,
-    val isSentByUser: Boolean // true kalau pesan dari user (bubble kanan), false kalau dari lawan chat (bubble kiri)
+    val sender: String = "",
+    val text: String = "",
+    val timestamp: Long = System.currentTimeMillis()
 )
+

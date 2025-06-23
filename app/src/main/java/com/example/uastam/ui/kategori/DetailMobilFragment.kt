@@ -5,10 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.uastam.R
+import com.example.uastam.ui.itemchat.ChatDetailFragment
+import com.google.android.material.button.MaterialButton
 
 class DetailMobilFragment : Fragment() {
 
@@ -23,6 +26,13 @@ class DetailMobilFragment : Fragment() {
             return fragment
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        val bottomBar = requireActivity().findViewById<LinearLayout>(R.id.bottombardetail)
+        bottomBar?.visibility = View.VISIBLE
+    }
+
 
     private lateinit var mobil: DataClassMobil
 
@@ -62,8 +72,31 @@ class DetailMobilFragment : Fragment() {
         view.findViewById<TextView>(R.id.lokasidetailmobil).text = mobil.alamat
         view.findViewById<TextView>(R.id.namapenjualmobil).text = mobil.penjual
 
+        // Tombol Kembali
         view.findViewById<ImageView>(R.id.btnBack).setOnClickListener {
             requireActivity().onBackPressed()
         }
+
+        // Tombol Chat ke Penjual
+        view.findViewById<View>(R.id.btnChatPenjual).setOnClickListener {
+            val chatName = mobil.penjual  // pastikan ini bukan null atau kosong
+
+            // Sembunyikan bottom bar jika ada
+            val bottomBar = requireActivity().findViewById<LinearLayout>(R.id.bottombardetail)
+            bottomBar?.visibility = View.GONE
+
+            // Pindah ke ChatDetailFragment
+            val chatDetailFragment = ChatDetailFragment().apply {
+                arguments = Bundle().apply {
+                    putString("NAMA_CHAT", chatName)
+                }
+            }
+
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.framecontainer, chatDetailFragment)
+                .addToBackStack(null)
+                .commit()
+        }
+
     }
 }
