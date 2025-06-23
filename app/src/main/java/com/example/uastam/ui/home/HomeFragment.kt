@@ -48,6 +48,14 @@ class HomeFragment : Fragment() {
 
         getLocation()
 
+        val notifikasi = view.findViewById<View>(R.id.homenotifikasi)
+        notifikasi.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.container, NotificationsFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
         val logomobil = view.findViewById<View>(R.id.homelogomobil)
         logomobil.setOnClickListener {
             parentFragmentManager.beginTransaction()
