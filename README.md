@@ -25,7 +25,7 @@ Penjual dapat mengunggah iklan kendaraan dengan mengisi:
 - Lokasi
 
 ### 🔎 Pencarian
-Pengguna dapat mencari kendaraan berdasarkan **merek** atau **model** menggunakan fitur pencarian kata kunci.
+Pengguna dapat mencari kendaraan berdasarkan **merek**, **model** atau **harga** menggunakan fitur pencarian kata kunci.
 
 ### 💬 Chat Langsung
 Fitur **chat** memungkinkan pembeli dan penjual untuk berkomunikasi langsung dalam aplikasi.
