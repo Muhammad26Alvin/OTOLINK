@@ -21,7 +21,7 @@ Penjual dapat mengunggah iklan kendaraan dengan mengisi:
 - Tahun
 - Harga
 - Deskripsi
-- Foto kendaraan (disimpan di Firebase Storage)
+- Foto kendaraan
 - Lokasi
 
 ### 🔎 Pencarian
@@ -38,11 +38,10 @@ Pengguna dapat menyimpan kendaraan favorit ke akun mereka untuk dilihat kembali 
 ## 🔧 Teknologi yang Digunakan
 
 - **Android Studio**
-- **Kotlin** untuk logika aplikasi
-- **Firebase Authentication** – untuk login dan registrasi
-- **Firebase Realtime Database / Firestore** – untuk menyimpan data kendaraan dan pengguna
-- **Firebase Storage** – untuk menyimpan foto kendaraan
-- **Firebase Cloud Messaging (opsional)** – untuk notifikasi chat atau favorit
+- **Kotlin** - untuk logika aplikasi
+- **XML** - untuk tampilan aplikasi
+- **Firebase Realtime Database / Firestore** – untuk menyimpan data kendaraan, pengguna, chat, dan favorit
+- **Imgur.com** - untuk generate foto menjadi link
 
 ---
 
