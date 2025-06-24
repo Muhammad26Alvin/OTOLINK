@@ -48,3 +48,9 @@ Pengguna dapat menyimpan kendaraan favorit ke akun mereka untuk dilihat kembali 
 
 ## 👥 Anggota Kelompok
 - Ahmad Fikri Hanif (2317051061) Kelas B (Membuat view bagian Start page, login dan registrasi).
+- Intan Nur Laila (2317051109 Kelas B (Membuat View bagian fitur chat, dan notifikasi)
+- 
+-
+-
+-
+
