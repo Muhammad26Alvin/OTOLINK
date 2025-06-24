@@ -50,7 +50,7 @@ Pengguna dapat menyimpan kendaraan favorit ke akun mereka untuk dilihat kembali 
 - Ahmad Fikri Hanif (2317051061) Kelas B (Membuat view bagian Start page, login dan registrasi).
 - Intan Nur Laila (2317051109 Kelas B (Membuat View bagian fitur chat, dan notifikasi)
 - Anindita Tri Mulia (2317051064) Kelas A (Membuat Kategori Mobil dan Deskripsi Mobil)
--
+- Ratu Berliana Rosfadila Machendra (2317051078) Kelas A (Membuat tampilan bottom navigation bar, tampilan home, kategori motor, dan menambah penjualan barang)
 -
 -
 
