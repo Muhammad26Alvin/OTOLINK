@@ -52,7 +52,7 @@ Pengguna dapat menyimpan kendaraan favorit ke akun mereka untuk dilihat kembali 
 - Anindita Tri Mulia (2317051064) Kelas A (Membuat Kategori Mobil dan Deskripsi Mobil)
 - Ratu Berliana Rosfadila Machendra (2317051078) Kelas A (Membuat tampilan bottom navigation bar, tampilan home, kategori motor, dan menambah penjualan barang)
 - Rahayu Indah Lestari (2317051073) Kelas B (Membuat view tampilan bagian menu favorit, akun, edit akun dan pesanan)
--
+- Muhammad Alvin (2317051040) Kelas B (Membuat tampilan pengaturan dan edit kata sandi di menu akun saya, membuat tampilan pusat bantuan di menu akun saya, menghubungkan ke database)
 
 
 ![TAM](https://github.com/user-attachments/assets/7676fee5-25bf-4be3-ad18-d0d2a1301e66)
